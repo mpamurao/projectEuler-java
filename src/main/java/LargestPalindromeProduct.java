@@ -5,38 +5,32 @@ import java.util.List;
 public class LargestPalindromeProduct {
     public static void main(String[] args) {
 //        largest palindrome from product of 2x 3-digit numbers
-        int no1 = 999;
-        int no2 = 999;
-        int product = 0;
-        boolean isLargestPalindrome = false;
-        boolean sameNo = true;
+        int largestProduct = 1;
 
-        while (!isLargestPalindrome || no2 >= 100) {
-            product = no1 * no2;
-            isLargestPalindrome = isPalindrome(product);
-            no1 = no2;
+        for (int nbr = 999; nbr >= 100; nbr--) {
+            for (int i = nbr; i >= 100; i--) {
+                int product = nbr * i;
 
-            if (sameNo) {
-                no2 = no2 - 1;
-                sameNo = false;
-            }
-            else {
-                sameNo = true;
+                if (product % 10 == 0 || product < largestProduct) {
+                    continue;
+                }
+
+                if (isPalindrome(product)) {
+                    largestProduct = product;
+                }
             }
         }
-        System.out.println(product);
+        System.out.println(largestProduct);
     }
 
     private static boolean isPalindrome(int product) {
-        List<Integer> numbers = new ArrayList<>();
-        Integer currDigit = 0;
-        while (product > 1) {
-            currDigit = product % 10;
-            product = product / 10;
-            numbers.add(currDigit);
+        int reverse = 0;
+        int x = product;
+
+        while (x > 0) {
+            reverse = reverse * 10 + x % 10;
+            x /= 10;
         }
-        List<Integer> reverse = new ArrayList<>(numbers);
-        Collections.reverse(numbers);
-        return numbers == reverse;
+        return product == reverse;
     }
 }
